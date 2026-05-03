@@ -5,7 +5,6 @@
     <title>シフト給与計算</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <!-- PWA / iOS設定 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2370/2370264.png">
@@ -15,14 +14,9 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: sans-serif; padding: env(safe-area-inset-top) 12px 40px; background: #fdfbff; color: #1a1c1e; margin: 0; overflow-x: hidden; }
         
-        /* iOS追加説明パネル */
-        #ios-guide { 
-            background: #fff9c4; padding: 15px; border-radius: 16px; 
-            font-size: 13px; margin-bottom: 15px; border: 1px solid #fbc02d; 
-            line-height: 1.6; display: none; /* JSで制御 */
-        }
+        #ios-guide { background: #fff9c4; padding: 15px; border-radius: 16px; font-size: 13px; margin-bottom: 15px; border: 1px solid #fbc02d; line-height: 1.6; display: none; }
 
-        .salary-card { background: var(--p); color: white; padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .salary-card { background: var(--p); color: white; padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 12px; }
         .salary-val { font-size: 32px; font-weight: bold; }
         .salary-sub { font-size: 11px; opacity: 0.9; margin-top: 5px; }
 
@@ -34,9 +28,20 @@
         .input-item label { font-size: 10px; font-weight: bold; color: #666; }
         input { padding: 12px; border-radius: 10px; border: 1px solid var(--s); font-size: 16px; width: 100%; background: #f9f9fb; }
 
-        .time-row { display: flex; align-items: center; gap: 8px; padding: 12px; border-radius: 12px; border: 1px solid var(--s); margin-bottom: 8px; }
-        .time-row.active { border: 2px solid var(--p); background: #f0f7ff; }
-        .t-input { width: 80px !important; text-align: center; font-weight: bold; }
+        /* パターン選択部分の修正 */
+        .preset-list { display: flex; flex-direction: column; gap: 8px; }
+        .time-row { 
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px; border-radius: 12px; border: 2px solid var(--s); 
+            background: white; transition: 0.2s;
+        }
+        .time-row.active { border-color: var(--p); background: #e3f2fd; box-shadow: 0 2px 8px rgba(0,97,164,0.1); }
+        
+        .t-inputs { display: flex; align-items: center; gap: 5px; }
+        .t-input { width: 75px !important; text-align: center; font-weight: bold; padding: 8px !important; }
+        .radio-circle { width: 20px; height: 20px; border: 2px solid var(--s); border-radius: 50%; position: relative; }
+        .active .radio-circle { border-color: var(--p); background: var(--p); }
+        .active .radio-circle::after { content: ""; position: absolute; top: 4px; left: 4px; width: 8px; height: 8px; background: white; border-radius: 50%; }
 
         .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; width: 100%; }
         .day { aspect-ratio: 0.8; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 6px; border: 1px solid var(--s); border-radius: 8px; background: white; }
@@ -53,10 +58,9 @@
 </head>
 <body>
 
-<!-- iOS用ガイドパネル -->
 <div id="ios-guide">
     <strong>【iPhoneの方へ】</strong><br>
-    このツールをアプリとして追加するには、Safariの下にある<strong>共有ボタン（□に↑）</strong>を押して、<strong>「ホーム画面に追加」</strong>を選択してください。
+    共有ボタン（□に↑）から<strong>「ホーム画面に追加」</strong>をすると、アプリとして快適に使えます。
 </div>
 
 <div class="salary-card">
@@ -68,15 +72,15 @@
     <h3>⚙️ 基本設定</h3>
     <div class="config-grid">
         <div class="input-item"><label>対象月</label><input type="month" id="target-month" value="2026-05" onchange="initCalendar()"></div>
-        <div class="input-item"><label>平日時給</label><input type="number" id="base-wage" value="1000" onchange="calcSalary()"></div>
-        <div class="input-item" style="grid-column: span 2;"><label>土日加算（＋円）</label><input type="number" id="weekend-up" value="100" onchange="calcSalary()"></div>
+        <div class="input-item"><label>平日時給</label><input type="number" id="base-wage" value="1000" oninput="calcSalary()"></div>
+        <div class="input-item" style="grid-column: span 2;"><label>土日加算（＋円）</label><input type="number" id="weekend-up" value="100" oninput="calcSalary()"></div>
     </div>
 </div>
 
 <div class="section">
-    <h3>⏰ シフトパターン</h3>
-    <div id="preset-container"></div>
-    <button style="width:100%; border:1px dashed var(--p); background:none; padding:12px; border-radius:12px; color:var(--p); font-weight:bold;" onclick="addPreset()">＋ 枠を追加</button>
+    <h3>⏰ パターン選択</h3>
+    <div id="preset-container" class="preset-list"></div>
+    <button style="width:100%; border:1px dashed var(--p); background:none; padding:12px; border-radius:12px; color:var(--p); font-weight:bold; margin-top:10px;" onclick="addPreset()">＋ 枠を追加</button>
 </div>
 
 <div class="section">
@@ -86,12 +90,8 @@
 <button class="btn-main" onclick="downloadICS()">カレンダー形式で出力</button>
 
 <script>
-    // iOSかつブラウザ（非アプリモード）の場合のみガイドを表示
     const isIos = /iPhone|iPad|iPod/.test(navigator.userAgent);
-    const isStandalone = window.navigator.standalone;
-    if (isIos && !isStandalone) {
-        document.getElementById('ios-guide').style.display = 'block';
-    }
+    if (isIos && !window.navigator.standalone) document.getElementById('ios-guide').style.display = 'block';
 
     let selectedData = {}; let activeId = 0; let pCount = 0;
 
@@ -99,8 +99,16 @@
         const id = pCount++;
         const row = document.createElement('div');
         row.className = 'time-row'; row.id = `p-${id}`;
+        // 行全体をタップで選択
         row.onclick = (ev) => { if(ev.target.tagName !== 'INPUT') selectP(id); };
-        row.innerHTML = `<input type="radio" name="pr" id="r-${id}"> <input type="text" id="s-${id}" class="t-input" value="${s}" onchange="calcSalary()"> 〜 <input type="text" id="e-${id}" class="t-input" value="${e}" onchange="calcSalary()">`;
+        row.innerHTML = `
+            <div class="radio-circle"></div>
+            <div class="t-inputs">
+                <input type="text" id="s-${id}" class="t-input" value="${s}" oninput="updateCurrentShifts(${id})">
+                <span>〜</span>
+                <input type="text" id="e-${id}" class="t-input" value="${e}" oninput="updateCurrentShifts(${id})">
+            </div>
+        `;
         document.getElementById('preset-container').appendChild(row);
         if(id===0) selectP(0);
     }
@@ -109,7 +117,19 @@
         activeId = id;
         document.querySelectorAll('.time-row').forEach(r => r.classList.remove('active'));
         document.getElementById(`p-${id}`).classList.add('active');
-        document.getElementById(`r-${id}`).checked = true;
+    }
+
+    // パターンの時間を書き換えたら、そのパターンを使っている日の計算も即座に更新
+    function updateCurrentShifts(id) {
+        const newS = document.getElementById(`s-${id}`).value;
+        const newE = document.getElementById(`e-${id}`).value;
+        Object.keys(selectedData).forEach(key => {
+            if (selectedData[key].pid === id) {
+                selectedData[key].start = newS;
+                selectedData[key].end = newE;
+            }
+        });
+        calcSalary();
     }
 
     function initCalendar() {
@@ -127,7 +147,7 @@
                 } else { 
                     const s = document.getElementById(`s-${activeId}`).value;
                     const e = document.getElementById(`e-${activeId}`).value;
-                    selectedData[key] = {start:s, end:e, isWeekend: (day===0 || day===6)};
+                    selectedData[key] = {start:s, end:e, isWeekend: (day===0 || day===6), pid: activeId};
                     div.classList.add('selected');
                 }
                 calcSalary();
@@ -146,8 +166,9 @@
             const d = selectedData[key];
             const [sH, sM] = d.start.split(':').map(Number);
             const [eH, eM] = d.end.split(':').map(Number);
-            let h = (eH + eM/60) - (sH + sM/60); if(h<0) h+=24;
+            if(isNaN(sH) || isNaN(eH)) return;
             
+            let h = (eH + (eM||0)/60) - (sH + (sM||0)/60); if(h<0) h+=24;
             const dayWage = h * (d.isWeekend ? (base + up) : base);
             total += dayWage;
             if(d.isWeekend) hWe += h; else hWk += h;
@@ -166,13 +187,15 @@
         let ics = ["BEGIN:VCALENDAR","VERSION:2.0"];
         keys.forEach(k => {
             const s = selectedData[k];
-            ics.push("BEGIN:VEVENT",`DTSTART:${k}T${s.start.replace(':','')}00`,`DTEND:${k}T${s.end.replace(':','')}00`,"SUMMARY:バイト","END:VEVENT");
+            const start = s.start.replace(':','').padStart(4,'0');
+            const end = s.end.replace(':','').padStart(4,'0');
+            ics.push("BEGIN:VEVENT",`DTSTART:${k}T${start}00`,`DTEND:${k}T${end}00`,"SUMMARY:バイト","END:VEVENT");
         });
         ics.push("END:VCALENDAR");
         const a = document.createElement("a"); a.href=URL.createObjectURL(new Blob([ics.join("\r\n")],{type:"text/calendar"})); a.download="shift.ics"; a.click();
     }
 
-    addPreset(); addPreset("09:00","15:00"); initCalendar();
+    addPreset("18:00","21:00"); addPreset("09:00","15:00"); initCalendar();
 </script>
 </body>
 </html>
