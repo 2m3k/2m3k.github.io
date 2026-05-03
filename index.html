@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kura Shift Extractor</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts: Roboto & Google Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="m3-container">
+        <header class="m3-app-bar">
+            <div class="m3-logo">くらシフト抽出くん</div>
+        </header>
+
+        <section class="m3-hero">
+            <div class="m3-hero-card">
+                <img src="sushi.png" alt="Kura Logo" class="kura-logo">
+                <h1>シフト管理を、<br>もっとスマートに。</h1>
+                <p>お寿司屋さんのシフトカレンダーを一瞬で取り込み。<br><b>iCloud同期、LINE共有、画像保存</b>をこれ一つで。</p>
+                <div class="m3-cta-wrapper">
+    <a href="https://github.com/2m3k/kura-shift-extractor/archive/refs/tags/1.1.zip" class="m3-fab" id="download-btn">
+        <i class="fa-solid fa-download"></i>
+        <span>拡張機能をダウンロード</span>
+    </a>
+</div>
+
+<!-- ボタンの下に導入ガイドへの案内を追加すると親切です -->
+<p style="font-size: 0.8rem; margin-top: 16px; opacity: 0.7;">
+    ※ダウンロード後、解凍して「デベロッパーモード」で読み込んでください。
+</p>
+            </div>
+        </section>
+
+        <section class="m3-content">
+            <h2 class="m3-section-title">主な機能</h2>
+            <div class="m3-grid">
+                <div class="m3-card">
+                    <div class="m3-icon-box primary">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                    <h3>カレンダー同期</h3>
+                    <p>ICS形式で書き出し。iPhoneやGoogleカレンダーに一括登録できます。</p>
+                </div>
+
+                <div class="m3-card">
+                    <div class="m3-icon-box secondary">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </div>
+                    <h3>LINE共有テキスト</h3>
+                    <p>ボタン一つでLINEに貼り付けやすい形式のテキストを出力します。</p>
+                </div>
+
+                <div class="m3-card">
+                    <div class="m3-icon-box tertiary">
+                        <i class="fa-solid fa-file-image"></i>
+                    </div>
+                    <h3>画像保存</h3>
+                    <p>見やすいリスト形式の画像を生成。スマホのメモに最適です。</p>
+                </div>
+            </div>
+        </section>
+
+<footer class="m3-footer">
+    <p>&copy; 2026 Developed by 2m3k.</p>
+    <div style="font-size: 0.7rem; margin-top: 20px; opacity: 0.6; line-height: 1.4; text-align: left; display: inline-block;">
+        ※「iPhone」「iCloud」は、Apple Inc.の商標です。<br>
+        ※「Google」「Google Chrome」は、Google LLCの商標です。<br>
+        ※「LINE」は、LINEヤフー株式会社の登録商標です。<br>
+        ※本ツールは個人による研究開発物であり、各社公式のサービスとは一切関係ありません。
+    </div>
+</footer>
+    </div>
+    <script>
+    const btn = document.getElementById('download-btn');
+    btn.addEventListener('click', () => {
+        const span = btn.querySelector('span');
+        const originalText = span.innerText;
+        
+        // クリックされたら一時的にテキストを変える
+        span.innerText = 'ダウンロード中...';
+        btn.style.opacity = '0.7';
+        
+        setTimeout(() => {
+            span.innerText = originalText;
+            btn.style.opacity = '1';
+        }, 3000);
+    });
+</script>
+</body>
+</html>

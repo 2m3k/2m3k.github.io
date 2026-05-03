@@ -1,0 +1,151 @@
+:root {
+    /* Material Design 3 Color Tokens (Deep Sea & Lavender Scheme) */
+    --m3-primary: #0061a4;            /* 信頼感のあるメインブルー */
+    --m3-on-primary: #ffffff;
+    --m3-primary-container: #d1e4ff;  /* 柔らかい水色の背景 */
+    
+    --m3-secondary: #535f70;
+    --m3-secondary-container: #d7e3f7; /* カードのアクセント */
+    
+    --m3-tertiary: #6b5778;
+    --m3-tertiary-container: #f2daff; /* 華やかなラベンダー */
+    
+    --m3-surface: #fdfbff;            /* 全体の背景（ほぼ白に近い青） */
+    --m3-surface-variant: #dfe3eb;    /* ホバー時の色 */
+    --m3-on-surface: #1a1c1e;         /* テキスト色 */
+    --m3-outline: #73777f;            /* 境界線 */
+}
+
+body {
+    margin: 0;
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: var(--m3-surface);
+    color: var(--m3-on-surface);
+}
+
+.kura-logo{
+    width: 150px;
+    height: auto;
+}
+
+.m3-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* App Bar */
+.m3-app-bar {
+    padding: 24px 5%;
+    background-color: var(--m3-surface);
+}
+
+.m3-logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--m3-primary);
+}
+
+/* Hero Section */
+.m3-hero {
+    padding: 20px;
+}
+
+.m3-hero-card {
+    background-color: var(--m3-primary-container);
+    border-radius: 28px; /* M3の大きな角丸 */
+    padding: 60px 40px;
+    text-align: center;
+}
+
+.kura-logo {
+    max-width: 250px;
+    margin-bottom: 32px;
+}
+
+.m3-hero-card h1 {
+    font-size: 3rem;
+    line-height: 1.2;
+    margin-bottom: 24px;
+}
+
+.m3-hero-card p {
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 40px;
+}
+
+/* FAB (Floating Action Button) Style CTA */
+.m3-fab {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background-color: var(--m3-primary);
+    color: var(--m3-on-primary);
+    padding: 18px 32px;
+    border-radius: 16px;
+    text-decoration: none;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.m3-fab:hover {
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    transform: scale(1.02);
+}
+
+/* Features Section */
+.m3-content {
+    padding: 80px 5%;
+}
+
+.m3-section-title {
+    font-size: 2rem;
+    margin-bottom: 40px;
+}
+
+.m3-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.m3-card {
+    background-color: #fff;
+    border-radius: 24px;
+    padding: 32px;
+    border: 1px solid var(--m3-outline);
+    transition: 0.3s;
+}
+
+.m3-card:hover {
+    background-color: var(--m3-surface-variant);
+}
+
+.m3-icon-box {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+}
+
+.m3-icon-box.primary { background-color: var(--m3-primary-container); color: var(--m3-primary); }
+.m3-icon-box.secondary { background-color: var(--m3-secondary-container); color: #1d1b20; }
+.m3-icon-box.tertiary { background-color: var(--m3-tertiary-container); color: #001d35; }
+
+/* Footer */
+.m3-footer {
+    padding: 60px 5%;
+    text-align: center;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .m3-hero-card h1 { font-size: 2rem; }
+}
